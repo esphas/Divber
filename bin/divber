@@ -2,7 +2,31 @@
 STDOUT.sync = true
 
 require 'divber'
+require 'rayormoche'
 
-puts "ARGV: #{ARGV}"
-
-puts "NNNNNNNNNNNNNNNNEW Start! XD"
+Rayormoche.apply :divber do |divber|
+  # new
+  divber.command :new do |cmd|
+    cmd.alias :n
+    cmd.action do |_, args|
+      if !args.empty?
+        puts 'No Arguments Should Be Present!'
+        abort
+      end
+      Divber.command :new
+    end
+  end
+  # build
+  divber.command :build do |cmd|
+    cmd.alias :b
+    cmd.option :source, '-s SOURCE', '--src', '--source', 'specify the source path of the site'
+    cmd.option :dest, '-d DEST', '--dest', 'specify the dest path of the site to be generated'
+    cmd.action do |opts, args|
+      if !args.empty?
+        puts 'No Arguments Should Be Present!'
+        abort
+      end
+      Divber.command :build, opts
+    end
+  end
+end

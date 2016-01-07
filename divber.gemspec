@@ -17,6 +17,8 @@ Gem::Specification.new do |divber|
   divber.files         = Dir["**/*"].grep(/^(bin|lib)\//).reject{|d| FileTest.directory? d}
   divber.executables   = divber.files.grep(/^bin\//){|n| File.basename n}
 
+  divber.add_runtime_dependency 'rayormoche', '>= 0'
+
   divber.add_development_dependency 'bundler', '~> 1'
   divber.add_development_dependency 'rake', '>= 0'
 
