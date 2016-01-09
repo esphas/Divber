@@ -8,12 +8,8 @@ Rayormoche.apply :divber do |divber|
   # new
   divber.command :new do |cmd|
     cmd.alias :n
-    cmd.action do |_, args|
-      if !args.empty?
-        puts 'No Arguments Should Be Present!'
-        abort
-      end
-      Divber.command :new
+    cmd.action do |opts, args|
+      Divber.command :new, opts, args
     end
   end
   # build
@@ -22,11 +18,7 @@ Rayormoche.apply :divber do |divber|
     cmd.option :source, '-s SOURCE', '--src', '--source', 'specify the source path of the site'
     cmd.option :dest, '-d DEST', '--dest', 'specify the dest path of the site to be generated'
     cmd.action do |opts, args|
-      if !args.empty?
-        puts 'No Arguments Should Be Present!'
-        abort
-      end
-      Divber.command :build, opts
+      Divber.command :build, opts, args
     end
   end
 end
