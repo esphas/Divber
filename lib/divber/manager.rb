@@ -12,7 +12,7 @@ class Divber::Manager
   # @return [Boolean] true for success
   def initialize cmd, opts, args
     metname = 'command_' + cmd.to_s
-    abort [InvalidCommand, ?\n, ?\t, cmd.to_s].join unless respond_to? metname
+    abort [InvalidCommand, ?\n, ?\t, cmd.to_s].join.failurefy unless respond_to? metname
     met = method metname
     met.call opts, args
     return true

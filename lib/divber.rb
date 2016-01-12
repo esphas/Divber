@@ -1,4 +1,6 @@
 require 'divber/version'
+require 'divber/utils'
+require 'yaml'
 
 # The main *Divber* module.
 module Divber

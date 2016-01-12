@@ -21,4 +21,8 @@ Rayormoche.apply :divber do |divber|
       Divber.command :build, opts, args
     end
   end
+  # invalid command
+  divber.action do |_, args|
+    abort ['Divber: Invalid command: ', args].flatten.join.warningfy
+  end
 end
