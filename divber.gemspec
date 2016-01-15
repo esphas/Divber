@@ -14,7 +14,7 @@ Gem::Specification.new do |divber|
   divber.homepage      = 'https://github.com/esphas/divber'
 
   divber.require_paths = ['lib']
-  divber.files         = Dir["**/*"].grep(/^(bin|lib)\//).reject{|d| FileTest.directory? d}
+  divber.files         = Dir['**/*'].grep(/^(bin|lib)\//).reject{|d| FileTest.directory? d}
   divber.executables   = divber.files.grep(/^bin\//){|n| File.basename n}
 
   divber.add_runtime_dependency 'rayormoche', '>= 0'
