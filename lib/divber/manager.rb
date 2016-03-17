@@ -25,11 +25,9 @@ class Divber::Manager
   #
   # @return [Site] a Site based on current directory
   def command_new opts, args
-    if !args.empty?
-      puts 'No Arguments Should Be Present!'
-      abort
-    end
-    site = Divber::Site.new default_source
+    root = args[0] || default_source
+    FileUtils.mkpath root
+    site = Divber::Site.new root
     site.helloworld
     site
   end
@@ -41,11 +39,7 @@ class Divber::Manager
   #
   # @return [Site] a Site based on source directory
   def command_build opts, args
-    if !args.empty?
-      puts 'No Arguments Should Be Present!'
-      abort
-    end
-    src  = opts[:source] || default_source
+    src  = args[0] || default_source
     dest = opts[:dest] || default_dest
     site = Divber::Site.new src
     site.config

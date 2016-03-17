@@ -12,7 +12,23 @@ class Divber::Analyzer
 
   # (see Site#analyze)
   def analyze
-    # TODO:
-    Divber::Structure.new
+    structure = Divber::Structure.new
+    Dir['**/*'].each do |filename|
+      next if FileTest.directory? filename
+      if source_file? filename
+        structure << ::Divber::SourceFile.new filename
+      elsif not ignored_file? filename
+        structure << ::Divber::StaticFile.new filename
+      end
+    end
+    structure
+  end
+
+  # TODO: examine source files
+  def source_file? filename
+  end
+
+  # TODO: examine ignored files
+  def ignored_file? filename
   end
 end

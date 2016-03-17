@@ -7,16 +7,24 @@ class Divber::Configuration
   #
   # @param root (see Analyzer#initialize)
   def self.init root
-    abort AlreadyInitialized.warningfy if FileTest.exist? self.config_filename
-    cfg = {
-      # TODO: Default config entries
-    }
-    open self.config_filename, 'wb' do |configf|
-      configf.write cfg.to_yaml
+    path = File.expand_path root + ?/ + self.config_filename
+    abort AlreadyInitialized.warningfy if FileTest.exist? path
+    open path, 'wb' do |configf|
+      configf.write suggested_config.to_yaml
     end
   end
 
-  #
+  # TODO: suggested configs
+  def self.suggested_config
+    {}
+  end
+
+  # TODO: default configs
+  def self.default_config
+    {}
+  end
+
+  # TODO: write comments
   def self.config_filename
     '.cfg.divber.yml'
   end
@@ -25,6 +33,12 @@ class Divber::Configuration
   #
   # @param root (see Analyzer#initialize)
   def initialize root
-    @config = YAML.load open Configuration.config_filename, 'rb', &:read
+    path = File.expand_path root + ?/ + self.class.config_filename
+    @config = YAML.load open path, 'rb', &:read
+  end
+
+  # TODO: write comments
+  def [] key
+    @config[key] || self.class.default_config[key]
   end
 end

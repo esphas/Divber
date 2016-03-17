@@ -1,16 +1,27 @@
 
-task :default => :test
+desc 'Default Tasks'
+task :default => :build
 
-multitask :test => %w[ hello_world test_new ]
-
-task :hello_world do
-  ruby 'test/hello_world.rb'
+desc 'Build Divber Site'
+task :build => :test do
+  sh 'divber', 'build', 'site', '-d', 'divber_site'
 end
 
-task :test_new do
-  sh 'divber', 'new'
-end
-
-task :test_build do
-  sh 'divber', 'build'
+desc 'Test'
+task :test do
+  sh 'rm -rf test/*'
+  # Initialize site in a location that does not exist
+  sh 'divber', 'new', 'test/site'
+  # Initialize site in a existing site path(Expecting abortion)
+  begin
+    sh 'divber', 'new', 'test/site'
+    raise Exception, 'Expecting Abortion!'
+  rescue RuntimeError
+  end
+  # Build empty site
+  sh 'divber', 'build', 'test/site', '-d', 'test/site_product'
+  # Initialize site in a site product
+  sh 'divber', 'new', 'test/site_product'
+  # Build on a re-initialized site product
+  sh 'divber', 'build', 'test/site_product'
 end
