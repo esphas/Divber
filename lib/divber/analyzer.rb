@@ -16,9 +16,9 @@ class Divber::Analyzer
     Dir['**/*'].each do |filename|
       next if FileTest.directory? filename
       if source_file? filename
-        structure << ::Divber::SourceFile.new filename
+        structure << ::Divber::SourceFile.new(filename)
       elsif not ignored_file? filename
-        structure << ::Divber::StaticFile.new filename
+        structure << ::Divber::StaticFile.new(filename)
       end
     end
     structure
