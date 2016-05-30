@@ -1,3 +1,4 @@
+require 'fileutils'
 
 desc 'Default Tasks'
 task :default => :build
@@ -7,9 +8,19 @@ task :build => :test do
   sh 'divber', 'build', 'site', '-d', 'divber_site'
 end
 
+desc 'Cleaning'
+task :clean do
+  files = Dir['*'] - %w! Gemfile Gemfile.lock LICENSE README.md Rakefile bin divber.gemspec lib site !
+  puts 'Cleaning...', *files
+  FileUtils.rm_rf files
+  puts 'Done!'
+end
+
 desc 'Test'
 task :test do
-  sh 'rm -rf test/*'
+  puts 'Testing...'
+  sh 'rm -rf test'
+  sh 'mkdir test'
   # Initialize site in a location that does not exist
   sh 'divber', 'new', 'test/site'
   # Initialize site in a existing site path(Expecting abortion)
@@ -18,10 +29,11 @@ task :test do
     raise Exception, 'Expecting Abortion!'
   rescue RuntimeError
   end
+  # Override
+  sh 'divber', 'new', '-o', 'test/site'
+  sh 'rm -rf test/*'
+  sh 'cp -R site test/site'
   # Build empty site
   sh 'divber', 'build', 'test/site', '-d', 'test/site_product'
-  # Initialize site in a site product
-  sh 'divber', 'new', 'test/site_product'
-  # Build on a re-initialized site product
-  sh 'divber', 'build', 'test/site_product'
+  puts 'Done!'
 end

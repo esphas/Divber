@@ -2,6 +2,8 @@
 class Divber::Manager
 
   InvalidCommand = 'Invalid command called! Divber cannot continue!'
+  NoneInitializedBuild = 'The site being built has not been initialized - will be initialized automatically now..'
+  NoneInitializedBuildA = 'Initialize compeleted.'
 
   # start a task with given command, options and arguments.
   #
@@ -11,10 +13,10 @@ class Divber::Manager
   #
   # @return [Boolean] true for success
   def initialize cmd, opts, args
+    Divber::Log.info "#{ self.class }##{ __callee__ } #{ cmd.inspect }, #{ opts.inspect }, #{ args.inspect }"
     metname = 'command_' + cmd.to_s
     abort [InvalidCommand, ?\n, ?\t, cmd.to_s].join.failurefy unless respond_to? metname
-    met = method metname
-    met.call opts, args
+    __send__ metname, opts, args
     return true
   end
 
@@ -25,10 +27,11 @@ class Divber::Manager
   #
   # @return [Site] a Site based on current directory
   def command_new opts, args
+    Divber::Log.info "#{ self.class }##{ __callee__ } #{ opts.inspect }, #{ args.inspect }"
     root = args[0] || default_source
     FileUtils.mkpath root
     site = Divber::Site.new root
-    site.helloworld
+    site.helloworld opts[:override]
     site
   end
 
@@ -39,9 +42,15 @@ class Divber::Manager
   #
   # @return [Site] a Site based on source directory
   def command_build opts, args
+    Divber::Log.info "#{ self.class }##{ __callee__ } #{ opts.inspect }, #{ args.inspect }"
     src  = args[0] || default_source
     dest = opts[:dest] || default_dest
     site = Divber::Site.new src
+    unless FileTest.exist? Divber::Configuration.config_path src
+      Divber::Log.warn NoneInitializedBuild.warningfy
+      command_new Hash.new, [src]
+      Divber::Log.warn NoneInitializedBuildA.warningfy
+    end
     site.config
     site.analyze
     site.build dest

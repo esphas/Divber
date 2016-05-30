@@ -1,18 +1,27 @@
+
+module Divber
+  Log = Logger.new STDOUT
+  Log.level = Logger::DEBUG
+  Log.formatter = proc do |severity, datetime, progname, msg|
+    "#{ severity[0, 1] }> #{ msg }\n"
+  end
+end
+
 #
 class String
 
   #
   def warningfy
-    "\033[33m#{self}\033[0m"
+    "\e[33m#{ self }\e[0m"
   end
 
   #
   def successfy
-    "\033[32m#{self}\033[0m"
+    "\e[32m#{ self }\e[0m"
   end
 
   #
   def failurefy
-    "\033[31m#{self}\033[0m"
+    "\e[31m#{ self }\e[0m"
   end
 end

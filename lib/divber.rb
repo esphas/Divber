@@ -1,19 +1,18 @@
+require 'erb'
+require 'fileutils'
+require 'logger'
+require 'yaml' #TODO
 require 'divber/version'
 require 'divber/utils'
-require 'fileutils'
-require 'yaml'
 
 # The main *Divber* module.
 module Divber
   autoload :Analyzer,      'divber/analyzer'
   autoload :Configuration, 'divber/configuration'
-  autoload :DestFile,      'divber/file-dest'
-  autoload :File,          'divber/file'
+  autoload :ERBBinding,    'divber/erbbinding'
   autoload :Manager,       'divber/manager'
-  autoload :Parser,        'divber/parser'
   autoload :Site,          'divber/site'
-  autoload :SourceFile,    'divber/file-src'
-  autoload :StaticFile,    'divber/file-static'
+  autoload :SourceFile,    'divber/source-file'
   autoload :Structure,     'divber/structure'
 
   # (see Divber::Manager#initialize)

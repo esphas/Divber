@@ -12,6 +12,7 @@ Rayormoche.apply :divber do |divber|
     cmd.alias :i
     cmd.description = 'initialize site in specific path or current directory by default'
     cmd.syntax = '<command> [SOURCE]'
+    cmd.option :override, '-o', '--override', 'override existing configuration'
     cmd.action do |opts, args|
       Divber.command :new, opts, args
     end
