@@ -2,6 +2,7 @@
 class Divber::Site
 
   autoload :Page, 'divber/site/page'
+  autoload :Site, 'divber/site/site'
 
   # initialize with the path to the source site.
   #
@@ -15,7 +16,7 @@ class Divber::Site
   #
   # @return [Configuration] the Configuration object
   def helloworld override
-    Divber::Log.info "#{ self.class }##{ __callee__ } #{ override.inspect }"
+    Divber::Log.debug "#{ self.class }##{ __callee__ } #{ override.inspect }"
     Divber::Configuration.init @source, override
   end
 
@@ -23,7 +24,7 @@ class Divber::Site
   #
   # @return [Configuration] the Configuration object
   def config
-    Divber::Log.info "#{ self.class }##{ __callee__ }"
+    Divber::Log.debug "#{ self.class }##{ __callee__ }"
     @config = Divber::Configuration.new @source
   end
 
@@ -31,8 +32,8 @@ class Divber::Site
   #
   # @return [Structure] a Structure for building dest site
   def analyze
-    Divber::Log.info "#{ self.class }##{ __callee__ }"
-    analyzer = Divber::Analyzer.new @source, @config
+    Divber::Log.debug "#{ self.class }##{ __callee__ }"
+    analyzer = Divber::Analyzer.new @config
     @structure = analyzer.analyze
   end
 
@@ -42,7 +43,7 @@ class Divber::Site
   #
   # @return [Boolean] true for success
   def build dest
-    Divber::Log.info "#{ self.class }##{ __callee__ } #{ dest.inspect }"
-    @structure.apply @source, dest, @config
+    Divber::Log.debug "#{ self.class }##{ __callee__ } #{ dest.inspect }"
+    @structure.apply dest, @config
   end
 end

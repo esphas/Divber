@@ -7,7 +7,7 @@ class Divber::Configuration
   #
   # @param root (see Analyzer#initialize)
   def self.init root, override
-    Divber::Log.info "#{ self }.#{ __callee__ } #{ root.inspect }, #{ override.inspect }"
+    Divber::Log.debug "#{ self }.#{ __callee__ } #{ root.inspect }, #{ override.inspect }"
     path = self.config_path root
     override ? [File.delete(path), Divber::Log.warn(AlreadyInitialized.warningfy)] : abort(AlreadyInitialized.warningfy) if FileTest.exist? path
     open path, 'wb' do |configf|
@@ -19,14 +19,24 @@ class Divber::Configuration
   #
   # @return [Hash] suggested config
   def self.suggested_config
-    {}
+    {
+      'url'  => 'localhost',
+      'name' => 'My Divber Site'
+    }
   end
 
   # default configs that are used when no custom configs are in exsitence.
   #
   # @return [Hash] default config
   def self.default_config
-    {}
+    {
+      'ignored_files' => ['**/\.*'],
+      'binary_files'  => ['**/*.exe', '**/*.png'],
+      'include_dir'   => 'include',
+      'layout_dir'    => 'layout',
+      'sass_dir'      => 'sass',
+      'url'           => 'localhost'
+    }
   end
 
   # default filename for the config file.
@@ -49,10 +59,11 @@ class Divber::Configuration
   # initialize with the config file in source site.
   #
   # @param root (see Analyzer#initialize)
-  def initialize root
-    Divber::Log.debug "#{ self.class }##{ __callee__ } #{ root.inspect }"
-    path = self.class.config_path root
-    @config = YAML.load open path, 'rb', &:read
+  def initialize source
+    Divber::Log.debug "#{ self.class }##{ __callee__ } #{ source.inspect }"
+    path = self.class.config_path source
+    @config = YAML.load(File.read path) || {}
+    @config['source'] = source
   end
 
   # get configs
@@ -65,8 +76,7 @@ class Divber::Configuration
     @config[key] || self.class.default_config[key]
   end
 
-  #
   def inspect
-    "#<#{ self.class }:#{ object_id }>"
+    "#<#{ self.class }: #{ @config.size } configs>"
   end
 end

@@ -2,12 +2,12 @@
 class Divber::Site::Page
 
   #
-  def title
-    'TODO'
+  def initialize yaml
+    @yaml = yaml
   end
 
   #
-  def content
-    'TODO'
+  def [] key
+    @yaml[key]
   end
 end

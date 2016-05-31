@@ -13,7 +13,7 @@ class Divber::Manager
   #
   # @return [Boolean] true for success
   def initialize cmd, opts, args
-    Divber::Log.info "#{ self.class }##{ __callee__ } #{ cmd.inspect }, #{ opts.inspect }, #{ args.inspect }"
+    Divber::Log.debug "#{ self.class }##{ __callee__ } #{ cmd.inspect }, #{ opts.inspect }, #{ args.inspect }"
     metname = 'command_' + cmd.to_s
     abort [InvalidCommand, ?\n, ?\t, cmd.to_s].join.failurefy unless respond_to? metname
     __send__ metname, opts, args
@@ -27,7 +27,7 @@ class Divber::Manager
   #
   # @return [Site] a Site based on current directory
   def command_new opts, args
-    Divber::Log.info "#{ self.class }##{ __callee__ } #{ opts.inspect }, #{ args.inspect }"
+    Divber::Log.debug "#{ self.class }##{ __callee__ } #{ opts.inspect }, #{ args.inspect }"
     root = args[0] || default_source
     FileUtils.mkpath root
     site = Divber::Site.new root
@@ -42,7 +42,7 @@ class Divber::Manager
   #
   # @return [Site] a Site based on source directory
   def command_build opts, args
-    Divber::Log.info "#{ self.class }##{ __callee__ } #{ opts.inspect }, #{ args.inspect }"
+    Divber::Log.debug "#{ self.class }##{ __callee__ } #{ opts.inspect }, #{ args.inspect }"
     src  = args[0] || default_source
     dest = opts[:dest] || default_dest
     site = Divber::Site.new src

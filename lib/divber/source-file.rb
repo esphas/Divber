@@ -1,4 +1,4 @@
-# *SourceFile* represents the required files in the site
+# *SourceFile* represents the required source files in the site
 class Divber::SourceFile
 
   # Initialize
@@ -13,9 +13,13 @@ class Divber::SourceFile
   # Generate files
   #
   # @param config (see Analyzer#initialize)
-  def to source, dest
-    type = :default
+  # @param TODO
+  def to dest, config
+    Divber::Log.debug "#{ self.class }##{ __callee__ }: #{ dest }/#{ @fullname }"
+    content = File.read File.expand_path(@fullname, config['source'])
+    yaml = YAML.load(content) || {}
+    content.gsub! /\A---.*?(?:\.\.\.|---)\n/m, ''
     FileUtils.mkpath File.expand_path(@path, dest)
-    File.write File.expand_path(@fullname, dest), ERB.new(File.read(File.expand_path(@fullname, source))).result(Divber::ERBBinding.new(type).get_binding)
+    File.write File.expand_path(@fullname, dest), Divber::ERBParser.new(yaml, config, content).result
   end
 end

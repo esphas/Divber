@@ -8,8 +8,9 @@ require 'divber/utils'
 # The main *Divber* module.
 module Divber
   autoload :Analyzer,      'divber/analyzer'
+  autoload :BinaryFile,    'divber/binary-file'
   autoload :Configuration, 'divber/configuration'
-  autoload :ERBBinding,    'divber/erbbinding'
+  autoload :ERBParser,     'divber/erbparser'
   autoload :Manager,       'divber/manager'
   autoload :Site,          'divber/site'
   autoload :SourceFile,    'divber/source-file'
