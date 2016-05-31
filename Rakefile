@@ -3,8 +3,16 @@ require 'fileutils'
 desc 'Default Tasks'
 task :default => :build
 
-desc 'Build Divber Site'
 task :build => :test do
+  sh 'gem', 'build', 'divber.gemspec'
+end
+
+task :publish => :clean, :build do
+  sh 'gem', 'push', '*.gem'
+end
+
+desc 'Build Divber Site'
+task :site => :test do
   sh 'divber', 'build', 'site', '-d', 'divber_site'
 end
 

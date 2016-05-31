@@ -53,7 +53,7 @@ class Divber::Configuration
   # @return [String] path
   def self.config_path root
     Divber::Log.debug "#{ self }.#{ __callee__ } #{ root.inspect }"
-    path = File.expand_path self.config_filename, root
+    File.expand_path self.config_filename, root
   end
 
   # initialize with the config file in source site.

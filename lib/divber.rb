@@ -1,7 +1,7 @@
 require 'erb'
 require 'fileutils'
 require 'logger'
-require 'yaml' #TODO
+require 'yaml'
 require 'divber/version'
 require 'divber/utils'
 
